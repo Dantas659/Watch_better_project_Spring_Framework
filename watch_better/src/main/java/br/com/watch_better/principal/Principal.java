@@ -1,4 +1,4 @@
-package br.com.watch_better;
+package br.com.watch_better.principal;
 
 import java.util.ArrayList;
 import java.util.List;
