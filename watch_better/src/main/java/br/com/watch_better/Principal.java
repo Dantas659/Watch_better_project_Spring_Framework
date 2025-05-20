@@ -3,6 +3,7 @@ package br.com.watch_better;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 
+import br.com.watch_better.model.EpisodeData;
 import br.com.watch_better.model.SerieData;
 import br.com.watch_better.service.ConsumoApi;
 import br.com.watch_better.service.dataConverter.ConversionService;
@@ -20,6 +21,8 @@ public class Principal implements CommandLineRunner {
         ConversionService conversionService = new ConversionService();
         SerieData data = conversionService.dataFetcher(json, SerieData.class);
         System.out.println(data);
-        
+        json = consumoApi.getData("http://www.omdbapi.com/?t=gilmore+girls&Season=1&Episode=1&apikey=14c1e91b");
+        EpisodeData episodeData = conversionService.dataFetcher(json, EpisodeData.class);
+        System.out.println(episodeData);
     }
 }
