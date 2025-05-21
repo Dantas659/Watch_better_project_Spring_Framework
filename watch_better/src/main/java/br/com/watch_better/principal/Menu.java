@@ -1,9 +1,13 @@
 package br.com.watch_better.principal;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
+import br.com.watch_better.model.Episode;
+import br.com.watch_better.model.EpisodeData;
 import br.com.watch_better.model.SeasonData;
 import br.com.watch_better.model.SerieData;
 import br.com.watch_better.service.ApiConsumer;
@@ -33,13 +37,24 @@ public class Menu {
             seasons.add(seasonData);
         }
         seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
-        
 
-         
+        List<EpisodeData> episodes = (List<EpisodeData>) seasons.stream()
+                .flatMap(s -> s.episodes().stream())
+                .collect(Collectors.toList());
+        episodes.stream()
+                .filter(e -> e.rating() != null && !e.rating().equalsIgnoreCase("N/A"))
+                .sorted(Comparator.comparing(EpisodeData::rating).reversed())
+                .limit(5)
+                .forEach(System.out::println);
+
+            List<Episode> episode = seasons.stream()
+            .flatMap(s -> s.episodes().stream()
+                .map(e -> new Episode(s.season(), e)))
+            .collect(Collectors.toList());   
+            episode.forEach(System.out::println);      
+    } 
+
+    public void getBetterEpisodes() {
+        
     }
 }
-
-
-   
-    
-
