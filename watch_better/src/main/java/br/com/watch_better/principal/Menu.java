@@ -32,10 +32,14 @@ public class Menu {
             SeasonData seasonData = conversionService.dataFetcher(json, SeasonData.class);
             seasons.add(seasonData);
         }
-        seasons.forEach(System.out::println);
+        seasons.forEach(s -> s.episodes().forEach(e -> System.out.println(e.title())));
+        
+
+         
     }
+}
 
 
    
     
-}
+
