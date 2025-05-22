@@ -1,8 +1,11 @@
 package br.com.watch_better.principal;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,9 @@ public class Menu {
 
 
 
+    /**
+     * 
+     */
     public void showMenu() {
         System.out.println("Welcome to Watch Better!");
         System.out.println("What do you want to see?");
@@ -52,7 +58,32 @@ public class Menu {
                 .map(e -> new Episode(s.season(), e)))
             .collect(Collectors.toList());   
             episode.forEach(System.out::println);      
-    } 
+
+        
+        System.out.println("Since which year do you want to see the episodes?");
+        String yearInput = scanner.nextLine();
+        LocalDate userDate = LocalDate.of(Integer.parseInt(yearInput), 1, 1);
+
+       
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MMM dd", Locale.ENGLISH);
+
+        episodes.stream()
+            .filter(e -> {
+                if (e.released() == null) {
+                    return false;
+                }
+                try {
+                    LocalDate episodeDate = LocalDate.parse(e.released(), formatter);
+                    return episodeDate.isAfter(userDate);
+                } catch (Exception ex) {
+                     System.out.println("Data inválida para o episódio: " + e.title());
+                    return false;
+                }
+            })
+            .forEach(System.out::println);
+
+
+    }
 
     public void getBetterEpisodes() {
         
